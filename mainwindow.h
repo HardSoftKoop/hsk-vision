@@ -74,7 +74,7 @@ private slots:
     void zoomOut();
     void extractDimensions();
     void showCameraInfo();
-    void openUSBCamera();
+    void openOCRUSBCamera();
     void openNectaCamera();
     void openOakDCamera();
     void updateFrame(cv::Mat*);
@@ -85,6 +85,7 @@ private slots:
 private:
     QMenu *imageMenu;
     QMenu *videoMenu;
+    QMenu *videoUSBMenu;
     QMenu *configMenu;
     QMenu *helpMenu;
 
@@ -109,7 +110,8 @@ private:
     QAction *zoomOutAction;
     QAction *extractDimensionsAction;
     QAction *cameraInfoAction;
-    QAction *USBcamera;
+    QAction *OCRUSBcamera;
+    QAction *calcFPSAction;
     QAction *NectaCamera;
     QAction *OakDCamera;
     QAction *aboutAction;

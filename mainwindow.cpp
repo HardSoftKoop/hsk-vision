@@ -57,6 +57,7 @@ void MainWindow::initUI()
     // setup menubar
     imageMenu = menuBar()->addMenu("&Image");
     videoMenu = menuBar()->addMenu("&Video");
+    videoUSBMenu = videoMenu->addMenu("USB");
     configMenu = menuBar()->addMenu("&Config");
     helpMenu = menuBar()->addMenu("&Help");
 
@@ -107,10 +108,12 @@ void MainWindow::createActions()
     imageMenu->addAction(saveTextAsAction);
     exitAction = new QAction("&Quit", this);
     imageMenu->addAction(exitAction);
-    cameraInfoAction = new QAction("&Camera info", this);
+    cameraInfoAction = new QAction("USB Camera info", this);
     configMenu->addAction(cameraInfoAction);  
-    USBcamera = new QAction("&USB Camera", this);
-    videoMenu->addAction(USBcamera);
+    OCRUSBcamera = new QAction("OCR", this);
+    videoUSBMenu->addAction(OCRUSBcamera);
+    calcFPSAction = new QAction("FPS", this);
+    videoUSBMenu->addAction(calcFPSAction);
     NectaCamera = new QAction("&Necta Camera", this);
     videoMenu->addAction(NectaCamera);
     OakDCamera = new QAction("&OAK-D Camera", this);
@@ -136,7 +139,8 @@ void MainWindow::createActions()
     connect(zoomInAction, SIGNAL(triggered(bool)), this, SLOT(zoomIn()));
     connect(zoomOutAction, SIGNAL(triggered(bool)), this, SLOT(zoomOut()));
     connect(cameraInfoAction, SIGNAL(triggered(bool)), this, SLOT(showCameraInfo()));
-    connect(USBcamera, SIGNAL(triggered(bool)), this, SLOT(openUSBCamera()));
+    connect(OCRUSBcamera, SIGNAL(triggered(bool)), this, SLOT(openOCRUSBCamera()));
+    //connect(calcFPSAction, SIGNAL(triggered(bool)), this, SLOT(calculateFPS()));
     connect(NectaCamera, SIGNAL(triggered(bool)), this, SLOT(openNectaCamera()));
     connect(OakDCamera, SIGNAL(triggered(bool)), this, SLOT(openOakDCamera()));
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(aboutDialog()));
@@ -439,7 +443,7 @@ void MainWindow::showCameraInfo()
     QMessageBox::information(this, "Cameras", info);
 }
 
-void MainWindow::openUSBCamera()
+void MainWindow::openOCRUSBCamera()
 {
     /*if(capturer != nullptr) {
         // if a thread is already running, stop it
@@ -449,7 +453,7 @@ void MainWindow::openUSBCamera()
     }*/
     // I am using my second camera whose Index is 2.  Usually, the
     // Index of the first camera is 0.
-    int camID = 2;
+    int camID = 0;
     capturer = new USBCaptureThread(camID, data_lock);
     connect(capturer, &USBCaptureThread::frameCaptured, this, &MainWindow::updateFrame);
     capturer->start();
@@ -568,7 +572,7 @@ QImage MainWindow::extractTextVideo(QImage frame)
 
 void MainWindow::aboutDialog()
 {
-    QMessageBox::about(this, "About HSK Vision","HSK Vision 1.1.""Under GPL licence." "Computer vision application developed by HardSoftKoop using QT libraries.");
+    QMessageBox::about(this, "About HSK Vision","HSK Vision 1.1.""Under GPL v3 licence." "Computer vision application developed by HardSoftKoop using QT libraries.");
 }
 void MainWindow::extractDimensions()
 {
@@ -601,5 +605,5 @@ void MainWindow::extractDimensions()
         drawContours( output, contours, (int)i, color, 2, cv::LINE_8, hierarchy, 0 );
     }
     showImage(output);
-
+    editor->setPlainText("Prueba");
 }
